@@ -63,6 +63,7 @@ textarea {
 
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    background: #ccc;
 }
 
 .wrapper {
@@ -326,6 +327,15 @@ nav a:hover {
     *zoom: 1;
 }
 
+canvas {
+  margin: 0 auto;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
 /* ==========================================================================
    Print styles
    ========================================================================== */
@@ -391,12 +401,4 @@ nav a:hover {
     h3 {
         page-break-after: avoid;
     }
-
-    canvas {
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: optimize-contrast;
-    -ms-interpolation-mode: nearest-neighbor;
-}
 }
