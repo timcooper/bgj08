@@ -4,7 +4,8 @@ var grunt = require('grunt'),
 module.exports = function() {
 	return {
 		"default": [
-			"uglify"
+			"uglify",
+			"cssmin"
 		]
 	}
 };
