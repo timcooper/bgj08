@@ -1,5 +1,4 @@
-var grunt = require('grunt'),
-	httpdocs  = grunt.option('httpdocs');
+var grunt = require('grunt');
 
 module.exports = {
 	build: {
