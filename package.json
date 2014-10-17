@@ -1,0 +1,13 @@
+{
+  "name": "bgj08",
+  "version": "0.0.1",
+  "description": "BaconGameJam 8 Entry",
+  "devDependencies": {
+    "phaser": "~2.1.2",
+    "async": "^0.7",
+    "grunt": "^0.4",
+    "load-grunt-config": "^0.8",
+    "grunt-contrib-uglify": "^0.4",
+    "grunt-contrib-watch": "^0.6"
+  }
+}
