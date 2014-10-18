@@ -34,7 +34,7 @@ function create() {
     player = game.add.sprite(0,0,null);
     player.anchor.setTo(.5);
 
-    player.arm = game.add.sprite(4,-5, 'heroarm');
+    player.arm = game.add.sprite(3,-5, 'heroarm');
     player.arm.anchor.setTo(0.1, 0.9);
     player.addChild(player.arm);
 
