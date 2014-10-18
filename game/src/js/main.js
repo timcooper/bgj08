@@ -18,6 +18,9 @@ var destructibles;
 var platforms;
 var ground;
 
+var tiles;
+var tilesCollision;
+
 function preload() {
 
     game.stage.backgroundColor = '#222222';
@@ -31,6 +34,7 @@ function preload() {
 
 function create() {
     game.stage.smoothed = false;
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 
     cursors = {
       up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -39,22 +43,72 @@ function create() {
       right: game.input.keyboard.addKey(Phaser.Keyboard.D)
     };
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-
     map = game.add.tilemap('caveMap');
     map.addTilesetImage('cave');
-    destructibles = map.createLayer('destructibles');
-    platforms = map.createLayer('platforms');
-    ground = map.createLayer('ground');
-    ground.resizeWorld();
+    //destructibles = map.createLayer('destructibles');
+    //platforms = map.createLayer('platforms');
+    //ground = map.createLayer('ground');
+    //ground.resizeWorld();
 
-    map.setCollisionBetween(52, 53, true, platforms);
+    /*map.setCollisionBetween(52, 53, true, platforms);
     map.setCollisionBetween(60, 61, true, platforms);
     map.setCollisionBetween(51, 52, true, ground);
     map.setCollisionBetween(59, 60, true, ground);
     map.setCollisionBetween(32,34, true, ground);
-    map.setCollisionBetween(40,42, true, ground);
-    //map.setCollisionBetween(50,65);
+    map.setCollisionBetween(40,42, true, ground);*/
+
+    map.layers.forEach(function(l){
+				var layer=map.createLayer(l.name);
+
+				if(l.name==='collision'){
+	            	var firstgid=map.tilesets[map.getTilesetIndex('collision')].firstgid;
+		            l.data.forEach(function(e){
+		                e.forEach(function(t){
+		                	if (t.index >-1) {
+		                		t.slopeIndex = t.index - firstgid;
+		                	}
+
+		                    if (t.index < 0) {
+		                        // none
+		                    } else if (t.index - firstgid === 7) {
+		                        // full square is by default
+		                    } else if (t.index - firstgid === 6) {
+		                        t.slope = 'HALF_TRIANGLE_BOTTOM_LEFT';
+		                    } else if (t.index - firstgid === 1) {
+		                        t.slope = 'HALF_TRIANGLE_BOTTOM_RIGHT';
+		                    }else  if (t.index - firstgid === 3) {
+		                    	t.slope = 'RECTANGLE_BOTTOM';
+		                    }else{
+		                    	//console.log(t.index - firstgid);
+		                    }
+		                    // you could also add custom collide function;
+		                    // t.slopeFunction = function (i, body, tile) { custom code }
+		                });
+		            });
+
+		            var collisionTiles = [];
+		            for(var i=firstgid;i<firstgid+18; i += 1){
+		                collisionTiles.push(i);
+		            }
+		            map.setCollision(collisionTiles, true, layer);
+
+		            tilesCollision=layer;
+		        }
+
+
+				layer.resizeWorld();
+			}, this);
+
+
+    //var slopeMap = { '51': 2, '59': 2 };
+
+    //tiles = game.physics.ninja.convertTilemap(map, ground, slopeMap);
+
+			game.time.advancedTiming = true;
+			fpsText = game.add.text(
+			  20, 20, '', { font: '16px Arial', fill: '#ffffff' }
+			);
+			fpsText.fixedToCamera = true;
 
     player = game.add.sprite(0,0,null);
     player.anchor.setTo(.5);
@@ -93,8 +147,8 @@ function create() {
 }
 
 function update() {
-    game.physics.arcade.collide(player, ground);
-    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collideSpriteVsTilemapLayer(player, tilesCollision);
+    //game.physics.arcade.collide(player, platforms);
 
     player.body.velocity.x = 0;
 
