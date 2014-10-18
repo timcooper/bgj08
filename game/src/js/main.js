@@ -99,16 +99,17 @@ function create() {
 				layer.resizeWorld();
 			}, this);
 
+      game.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     //var slopeMap = { '51': 2, '59': 2 };
 
     //tiles = game.physics.ninja.convertTilemap(map, ground, slopeMap);
 
-			game.time.advancedTiming = true;
+			/*game.time.advancedTiming = true;
 			fpsText = game.add.text(
 			  20, 20, '', { font: '16px Arial', fill: '#ffffff' }
 			);
-			fpsText.fixedToCamera = true;
+			fpsText.fixedToCamera = true;*/
 
     player = game.add.sprite(0,0,null);
     player.anchor.setTo(.5);
@@ -124,13 +125,18 @@ function create() {
     //  We need to enable physics on the player
     game.physics.arcade.enable(player);
 
-    game.camera.follow(player);
+    game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
 
     player.body.width = 16;
 
     //  Player physics properties. Give the little guy a slight bounce.
-    player.body.bounce.y = 0.2;
-    player.body.gravity.y = 1200;
+		player.body.maxVelocity.setTo(400, 750); // x, y
+
+		player.body.collideWorldBounds = true;
+		player.body.gravity.set(0, 1200);
+		player.body.allowGravity = true;
+
+    player.body.bounce.y = 0.1;
     player.body.collideWorldBounds = true;
 
     player.torso.animations.add('walk', [1, 2, 3, 4], 6);
@@ -150,7 +156,8 @@ function update() {
     game.physics.arcade.collideSpriteVsTilemapLayer(player, tilesCollision);
     //game.physics.arcade.collide(player, platforms);
 
-    player.body.velocity.x = 0;
+		player.body.acceleration.x=0;
+			player.body.velocity.x = 0+player.body.velocityPunish.x;
 
     if (cursors.left.isDown)
     {
