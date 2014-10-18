@@ -6,7 +6,7 @@ var currentSpeed = 0;
 var cursors;
 
 var swordsmen;
-var orderRate = 100;
+var orderRate = 250;
 var nextOrder = 0;
 
 var nextJump = 0;
@@ -17,10 +17,10 @@ var bmd;
 function preload() {
 
 game.stage.backgroundColor = '#ffffff';
-game.load.image('player', '../assets/testhero.png');
+//game.load.image('player', '../assets/testhero.png');
 game.load.image('swordsman', '../assets/swordsman.png');
 game.load.image('heroarm', '../assets/hero_arm.png');
-
+game.load.spritesheet('player', '../assets/walksheet.png', 32, 32);
 }
 
 function create() {
@@ -50,6 +50,8 @@ function create() {
     player.body.gravity.y = 1500;
     player.body.collideWorldBounds = true;
 
+    player.torso.animations.add('walk', [1, 2, 3, 4]);
+    player.torso.animations.add('rWalk', [4, 3, 2, 1]);
 
     swordsmen = game.add.group();
     swordsmen.enableBody = true;
@@ -69,21 +71,21 @@ function update() {
         //  Move to the left
         player.body.velocity.x = -175;
 
-        player.animations.play('left');
+        player.torso.animations.play(player.scale.x > -1 ? 'rWalk' : 'walk', 6);
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
         player.body.velocity.x = 150;
 
-        player.animations.play('right');
+        player.torso.animations.play(player.scale.x < 1 ? 'rWalk' : 'walk', 6);
     }
     else
     {
         //  Stand still
-        //player.animations.stop();
+        player.animations.stop();
 
-        //player.frame = 4;
+        player.torso.frame = 0;
     }
 
     //  Allow the player to jump if they are touching the ground.
@@ -128,7 +130,7 @@ function orderSwordsmen() {
 
         swordsman.reset(player.x + 5, player.y - 16);
 
-        game.physics.arcade.moveToPointer(swordsman, 100);
+        game.physics.arcade.moveToPointer(swordsman, 500);
     }
   //game.add.sprite(player.body.x, player.body.y, 'swordsman');
 }
