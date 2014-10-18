@@ -21,15 +21,18 @@ var ground;
 var tiles;
 var tilesCollision;
 
+var enemies;
+
 function preload() {
 
     game.stage.backgroundColor = '#222222';
     //game.load.image('player', '../assets/testhero.png');
     game.load.image('swordsman', '../assets/swordsman.png');
     game.load.image('heroarm', '../assets/hero_arm.png');
-    game.load.tilemap('caveMap', '../assets/cave.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('level1Map', '../assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('cave', '../assets/cave.png');
     game.load.spritesheet('player', '../assets/walksheet.png', 32, 32);
+    game.load.spritesheet('slime', '../assets/slime.png', 16, 16);
 }
 
 function create() {
@@ -43,7 +46,7 @@ function create() {
       right: game.input.keyboard.addKey(Phaser.Keyboard.D)
     };
 
-    map = game.add.tilemap('caveMap');
+    map = game.add.tilemap('level1Map');
     map.addTilesetImage('cave');
     //destructibles = map.createLayer('destructibles');
     //platforms = map.createLayer('platforms');
@@ -111,7 +114,9 @@ function create() {
 			);
 			fpsText.fixedToCamera = true;*/
 
-    player = game.add.sprite(0,0,null);
+    enemies = game.add.group();
+
+    player = game.add.sprite(32,32,null);
     player.anchor.setTo(.5);
 
     player.arm = game.add.sprite(3,-5, 'heroarm');
@@ -142,6 +147,14 @@ function create() {
     player.torso.animations.add('walk', [1, 2, 3, 4], 6);
     player.torso.animations.add('rWalk', [4, 3, 2, 1], 6);
 
+    //map.createFromObjects('enemies',39,'slime',0, true, false, enemies);
+    //enemies.forEach(setupEnemies, this);
+    //enemies.add('bounce');
+//enemies.play('bounce', 6, true);
+    /*slime = game.add.sprite(200,80,'slime');
+    slime.animations.add('bounce');
+    slime.animations.play('bounce', 6, true);*/
+
     swordsmen = game.add.group();
     swordsmen.enableBody = true;
     swordsmen.physicsBodyType = Phaser.Physics.ARCADE;
@@ -150,6 +163,13 @@ function create() {
     swordsmen.setAll('anchor.y', 0.5);
     swordsmen.setAll('outOfBoundsKill', true);
     swordsmen.setAll('checkWorldBounds', true);
+}
+
+function setupEnemies(s) {
+  if(s.name == 'slime') {
+    s.animations.add('bounce');
+    s.animations.play('bounce', 6, true);
+  }
 }
 
 function update() {
@@ -193,20 +213,20 @@ function update() {
         orderSwordsmen();
     }
 
+    if(game.input.activePointer.worldX < player.x) {
+        player.scale.x = -1;
+        player.arm.scale.x = -1;
+        player.arm.scale.y = -1;
+    }else {
+        player.scale.x = 1;
+        player.arm.scale.x = 1;
+        player.arm.scale.y = 1;
+    }
+
     player.arm.rotation = player.scale.x * game.math.angleBetween(
         player.x, player.y,
         game.input.activePointer.worldX, game.input.activePointer.worldY
     );
-console.log(player.x, game.input.activePointer.worldX);
-    if(game.input.activePointer.worldX < player.x) {
-        player.scale.x = -1;
-        player.arm.scale.y = -1;
-        player.arm.scale.x = -1;
-    }else {
-        player.scale.x = 1;
-        player.arm.scale.y = 1;
-        player.arm.scale.x = 1;
-    }
 }
 
 function render() {
