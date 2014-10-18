@@ -195,10 +195,10 @@ function update() {
 
     player.arm.rotation = player.scale.x * game.math.angleBetween(
         player.x, player.y,
-        game.input.activePointer.x, game.input.activePointer.y
+        game.input.activePointer.worldX, game.input.activePointer.worldY
     );
-
-    if(game.input.activePointer.x < player.x) {
+console.log(player.x, game.input.activePointer.worldX);
+    if(game.input.activePointer.worldX < player.x) {
         player.scale.x = -1;
         player.arm.scale.y = -1;
         player.arm.scale.x = -1;
