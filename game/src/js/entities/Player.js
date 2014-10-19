@@ -347,7 +347,9 @@ GameCtrl.Player.prototype = {
 
       console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
     }else{
-      this.sprite.kill();
+
+      this.sprite.torso.tint = 0xff0000;
+      this.sprite.arm.tint = 0xff0000;
 
       var spr_bg = this.game.add.graphics(0, 0);
       spr_bg.beginFill(0x000000, 1);
