@@ -60,7 +60,7 @@ var enemies;
 	GameCtrl.Level1.prototype = {
 
 		initPlayer:function(spawnPoint, map){
-			var destructibles = new GameCtrl.Destructibles(this.game, map);
+			var destructibles = new GameCtrl.Destructibles(this.game, map, this.pickups);
 			destructibles.create();
 
 			var player = new GameCtrl.Player(this.game, this.tilesCollision, destructibles);
@@ -138,6 +138,8 @@ var enemies;
 
       this.game.stage.disableVisibilityChange = true;
 
+			this.pickups = new GameCtrl.Pickups(this.game);
+
 			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0], map);
       this.realPlayer.addTroops('swordsmen', 50);
       this.realPlayer.addTroops('archers', 50);
@@ -145,7 +147,7 @@ var enemies;
       this.realPlayer.addTroops('berserkers', 50);
 			this.player = this.realPlayer.sprite;
 
-      this.enemies = new GameCtrl.Enemies(this.game, this.realPlayer, map);
+      this.enemies = new GameCtrl.Enemies(this.game, this.realPlayer, map, this.pickups);
       this.enemies.create();
 
 			this.enemies.spawn();
@@ -158,6 +160,9 @@ var enemies;
 
 			//this.collideSpriteVsTilemapLayer(object1, object2, collideCallback, processCallback, callbackContext);
 			this.physics.arcade.collideSpriteVsTilemapLayer(this.player, this.tilesCollision);
+			this.physics.arcade.collideSpriteVsTilemapLayer(this.pickups, this.tilesCollision);
+
+			this.physics.arcade.overlap(this.player, this.pickups, null, this.realPlayer.pickup, this.realPlayer );
 
 			this.enemies.update(this.testLayer);
 

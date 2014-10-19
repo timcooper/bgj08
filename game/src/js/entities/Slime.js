@@ -1,9 +1,10 @@
 (function(){
 'use strict';
 
-GameCtrl.Slime = function(game, player){
+GameCtrl.Slime = function(game, player, pickups){
   this.game = game;
   this.player = player;
+  this.pickups = pickups;
 
   this.attackRate = 1000;
   this.range = 0;
@@ -33,8 +34,8 @@ GameCtrl.Slime.prototype = {
         enemy.health = 2;
 
         enemy.events.onKilled.add(function() {
-          console.log('slime dead');
-        });
+          this.pickups.spawnEnemyLoot(enemy.x, enemy.y);
+        }.bind(this));
       }
     }
   },
@@ -59,7 +60,6 @@ GameCtrl.Slime.prototype = {
   },
 
   hurt: function(callee, caller) {
-    console.log(callee, caller);
     if(this.currentHealth - damage > 0 && this.isHurtable) {
       this.currentHealth -= damage;
 

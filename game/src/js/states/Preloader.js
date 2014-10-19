@@ -29,9 +29,10 @@ GameCtrl.Preloader.prototype = {
 		this.load.image('seer', '../assets/images/seer.png');
     this.load.image('berserker', '../assets/images/berserker.png');
 		this.load.spritesheet('skullnest1', '../assets/images/skullnest1.png', 32, 16);
+		this.load.spritesheet('pickups', '../assets/images/pickups.png', 16, 16);
     this.load.tilemap('level1Map', '../assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('cave', '../assets/cave.png');
-    this.load.spritesheet('player', '../assets/walksheet.png', 32, 32);
+    this.load.spritesheet('player', '../assets/images/hero.png', 32, 32);
     this.load.spritesheet('slime', '../assets/images/slime.png', 16, 16);
 
 	},

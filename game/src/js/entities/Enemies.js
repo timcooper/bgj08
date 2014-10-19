@@ -1,10 +1,11 @@
 (function(){
 'use strict';
 
-GameCtrl.Enemies = function(game, player, map){
+GameCtrl.Enemies = function(game, player, map, pickups){
   this.game = game;
   this.player = player;
   this.map = map;
+  this.pickups = pickups;
 
   this.spawnRate = 1000;
   this.nextSpawn = 100;
@@ -44,7 +45,7 @@ GameCtrl.Enemies.prototype = {
       this.spawnPoints = this.map.objects.enemySpawn;
 
       this.enemies = [
-        new GameCtrl.Slime(this.game, this.player)
+        new GameCtrl.Slime(this.game, this.player, this.pickups)
       ];
 
       for (var i = 0; i < this.enemies.length; i += 1) {

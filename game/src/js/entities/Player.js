@@ -235,8 +235,14 @@ GameCtrl.Player.prototype = {
   },
 
   pickup: function (player, pickup) {
-    pickup.kill();
-    console.log(pickup);
+    if(this.currentHealth < this.health) {
+      pickup.kill();
+      if(this.currentHealth + .5 > this.health) {
+        this.currentHealth = this.health;
+      }else{
+        this.currentHealth += .5;
+      }
+    }
   },
 
   addTroops: function(type, amount) {

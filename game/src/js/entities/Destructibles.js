@@ -1,9 +1,11 @@
 (function(){
 'use strict';
 
-GameCtrl.Destructibles = function(game, map){
+GameCtrl.Destructibles = function(game, map, pickups){
   Phaser.Group.call(this, game);
   this.map = map;
+  console.log(pickups);
+  this.pickups = pickups;
 
   this.spawnPoints = this.map.objects.destructibleSpawn;
 
@@ -13,8 +15,10 @@ GameCtrl.Destructibles = function(game, map){
       game.physics.arcade.enable(item);
       item.body.immovable = true;
       item.kill = function() {
+        item.body = null;
         item.frame = 1;
-      }
+        this.pickups.spawnDestrLoot(item.x, item.y);
+      }.bind(this);
   }, this, false);
 };
 
