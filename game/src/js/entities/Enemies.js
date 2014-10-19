@@ -16,7 +16,7 @@ GameCtrl.Enemies = function(game, player, map){
 };
 
 GameCtrl.Enemies.prototype = {
-  spawn: function(player) {
+  spawn: function() {
     if(this.canSpawn) {
       if (this.game.time.now > this.nextSpawn && this.currentEnemies <= this.totalEnemies)
       {
@@ -53,8 +53,9 @@ GameCtrl.Enemies.prototype = {
   },
 
   update: function (tilesCollision) {
+
     for (var i = 0; i < this.enemies.length; i += 1) {
-      this.enemies[i].update(tilesCollision);
+      this.enemies[i].update(this.player, tilesCollision);
     }
   }
 };

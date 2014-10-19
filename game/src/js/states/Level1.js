@@ -143,7 +143,7 @@ var enemies;
       this.realPlayer.addTroops('berserkers', 50);
 			this.player = this.realPlayer.sprite;
 
-      this.enemies = new GameCtrl.Enemies(this.game, this.player, map);
+      this.enemies = new GameCtrl.Enemies(this.game, this.realPlayer, map);
       this.enemies.create();
 
 			this.enemies.spawn();
@@ -157,9 +157,9 @@ var enemies;
 			//this.collideSpriteVsTilemapLayer(object1, object2, collideCallback, processCallback, callbackContext);
 			this.physics.arcade.collideSpriteVsTilemapLayer(this.player, this.tilesCollision);
 
-			this.realPlayer.update();
-
 			this.enemies.update(this.testLayer);
+
+			this.realPlayer.update(this.enemies);
 
 		},
 		render: function(){

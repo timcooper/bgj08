@@ -43,17 +43,9 @@ GameCtrl.Archers.prototype = {
   create: function () {
       this.troops = game.add.group();
 
-      this.troops.enableBody = true;
-      this.troops.physicsBodyType = Phaser.Physics.ARCADE;
-
       this.troops.createMultiple(30, 'arrow');
       this.troops.setAll('anchor.x', 0.5);
       this.troops.setAll('anchor.y', 0.5);
-      //this.troops.setAll('outOfBoundsKill', true);
-      //this.troops.setAll('checkWorldBounds', true);
-
-      this.troops.enableBody = true;
-      this.troops.physicsBodyType = Phaser.Physics.ARCADE;
   },
 
   update: function () {

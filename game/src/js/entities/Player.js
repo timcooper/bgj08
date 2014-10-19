@@ -9,6 +9,7 @@
   var JUMP_BACK_OFF = 400;
   var DOUBLE_TAP_RATE = 400;
   var DASH_COOLDOWN = 1000;
+  var INVULN_TIME = 75;
 
   GameCtrl.Player = function(game, tilesCollision){
     this.game = game;
@@ -27,6 +28,8 @@
     this.game.input.gamepad.start();
     this.pad1 = this.game.input.gamepad.pad1;
 
+    this.isHurtable = true;
+
     this.canJump = true;
     this.canDoubleJump = false;
 
@@ -35,6 +38,7 @@
     this.rDashPress = 100;
 
     this.health = BASE_HP;
+    this.currentHealth = this.health;
     this.moveSpeed = BASE_SPEED;
 
     this.skills = {
@@ -62,7 +66,6 @@ GameCtrl.Player.prototype = {
     s.torso.animations.add('rWalk', [4, 3, 2, 1], 6);
 
     this.sprite = s;
-
     this.physics.enable(s,Phaser.Physics.ARCADE,true);
 
     s.lastX=Math.floor(x);
@@ -104,17 +107,19 @@ GameCtrl.Player.prototype = {
     }, this);
 
     this.orders = {
-      'swordsmen': new GameCtrl.Swordsmen(this.game),
-      'archers': new GameCtrl.Archers(this.game),
-      'seers': new GameCtrl.Seers(this.game),
-      'berserkers': new GameCtrl.Berserkers(this.game)
+      'swordsmen': new GameCtrl.Swordsmen(this),
+      'archers': new GameCtrl.Archers(this),
+      'seers': new GameCtrl.Seers(this),
+      'berserkers': new GameCtrl.Berserkers(this)
     };
 
     this.activeOrder = this.orders.swordsmen;
     this.activeOrder.create();
 
   },
-  update: function() {
+  update: function(enemies) {
+    this.enemies = enemies;
+
     var body = this.sprite.body;
 
     body.acceleration.x=0;
@@ -217,6 +222,12 @@ GameCtrl.Player.prototype = {
         }
       }
     }
+
+    if(this.sprite.torso.tint == 0xff0000 && this.game.time.now > this.hurtTime + INVULN_TIME) {
+      this.sprite.torso.tint = 0xffffff;
+      this.sprite.arm.tint = 0xffffff;
+      this.isHurtable = true;
+    }
   },
 
   addTroops: function(type, amount) {
@@ -286,6 +297,23 @@ GameCtrl.Player.prototype = {
 
 
   },
+
+  hurt: function(damage) {
+    if(this.currentHealth - damage > 0 && this.isHurtable) {
+      this.currentHealth -= damage;
+
+      this.hurtTime = this.game.time.now;
+      this.isHurtable = false;
+
+      this.sprite.torso.tint = 0xff0000;
+      this.sprite.arm.tint = 0xff0000;
+
+      console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
+    }else{
+      console.log("UDIED");
+    }
+  },
+
   stop: function() {
     this.sprite.body.acceleration.x=0;
   }

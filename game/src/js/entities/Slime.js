@@ -4,6 +4,14 @@
 GameCtrl.Slime = function(game, player){
   this.game = game;
   this.player = player;
+
+  this.attackRate = 1000;
+  this.range = 0;
+  this.damage = .5;
+
+  this.nextAttack = 0;
+
+  this.health = 2;
 };
 
 GameCtrl.Slime.prototype = {
@@ -20,7 +28,13 @@ GameCtrl.Slime.prototype = {
         enemy.body.bounce.y = 0.5;
         enemy.body.collideWorldBounds = true;
         enemy.body.gravity.y = 500;
+        enemy.body.maxVelocity = 50;
         enemy.body.velocity.x = 50;
+        enemy.health = 2;
+
+        enemy.events.onKilled.add(function() {
+          console.log('slime dead');
+        });
       }
     }
   },
@@ -30,34 +44,50 @@ GameCtrl.Slime.prototype = {
 
     this.slimes = game.add.group();
 
-    this.slimes.enableBody = true;
-    this.slimes.physicsBodyType = Phaser.Physics.ARCADE;
-
     this.slimes.createMultiple(amount, 'slime');
     this.slimes.setAll('anchor.x', 0.5);
     this.slimes.setAll('anchor.y', 0.5);
-
-    this.slimes.enableBody = true;
-    this.slimes.physicsBodyType = Phaser.Physics.ARCADE;
 
     this.slimes.callAll('animations.add', 'animations', 'bounce', null, 6, true);
     this.slimes.callAll('play', null, 'bounce');
   },
 
-  update: function (tilesCollision) {
-    //game.physics.arcade.overlap(animalsGroup, player, playerHitsAnimal, null, this);
-    this.game.physics.arcade.collide(this.slimes, tilesCollision);
+  update: function (player, level) {
+    //this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
+    this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
+    this.game.physics.arcade.collide(this.slimes, level, null, this.collideLevel);
+  },
 
-    this.slimes.forEachAlive(function(item) {
-      if(item.body.blocked.right) item.body.velocity.x = -50;
-      if(item.body.blocked.left) item.body.velocity.x = 50;
+  hurt: function(callee, caller) {
+    console.log(callee, caller);
+    if(this.currentHealth - damage > 0 && this.isHurtable) {
+      this.currentHealth -= damage;
 
-      //this.game.physics.moveToPointer(item, 1000);
-      /*item.body.velocity.x = 100;
-      // move in opposite direction when on screen bounds
-      if ( (item.x < 0) || (item.x > 360) ) {item.body.velocity.x = -1 * 100;};*/
-    }, this);
-    //this.slimes.forEach(moveToObject, thigame.physics.arcade, this.player.sprite, 200);
+      this.hurtTime = this.game.time.now;
+      this.isHurtable = false;
+
+      this.sprite.torso.tint = 0xff0000;
+      this.sprite.arm.tint = 0xff0000;
+
+      console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
+    }else{
+      console.log("UDIED");
+    }
+  },
+
+  collidePlayer: function(callee, caller) {
+    if(this.player.isHurtable && this.game.time.now > this.nextAttack) {
+      this.nextAttack = this.game.time.now + this.attackRate;
+
+      this.player.hurt(this.damage);
+    }
+  },
+
+  collideLevel: function(slime, caller) {
+    if(slime.body.blocked.right) slime.body.velocity.x = -50;
+    if(slime.body.blocked.left) slime.body.velocity.x = 50;
+
+    if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
   }
 };
 
