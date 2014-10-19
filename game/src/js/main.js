@@ -6,7 +6,6 @@
 //        We're using a game size of 1024 x 768 here, but you can use whatever you feel makes sense for your game of course.
 var game = new Phaser.Game(320, 240, /*Phaser.AUTO*/ Phaser.CANVAS, 'game',false,false,false);
 
-
 	//        Add the States your game has.
 	//        You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
 game.state.add('Boot', GameCtrl.Boot);
