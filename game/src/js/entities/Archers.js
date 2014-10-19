@@ -8,7 +8,7 @@ GameCtrl.Archers = function(ctx){
   this.troopCount = 0;
   this.orderRate = 400;
   this.range = 10;
-  this.damage = .5;
+  this.damage = .2;
 
   this.nextOrder = 0;
 };

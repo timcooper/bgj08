@@ -8,7 +8,7 @@ GameCtrl.Slime = function(game, player, pickups){
 
   this.attackRate = 1000;
   this.range = 0;
-  this.damage = .5;
+  this.damage = 1;
 
   this.nextAttack = 0;
 
@@ -30,7 +30,7 @@ GameCtrl.Slime.prototype = {
         enemy.body.collideWorldBounds = true;
         enemy.body.gravity.y = 500;
         enemy.body.maxVelocity = 50;
-        enemy.body.velocity.x = 50;
+        enemy.body.velocity.x = this.game.rnd.normal() * 50;
         enemy.health = 2;
 
         enemy.events.onKilled.add(function() {
@@ -101,20 +101,22 @@ GameCtrl.Slime.prototype = {
   },
 
   collideLevel: function(slime, caller) {
-    var sign = slime.body.velocity.x > 0 ? 1 : -1;
-    slime.body.velocity.x = 50 * sign;
-    console.log(caller);
-    if (slime.lastLTrigger !== caller) {
+    //var sign = slime.body.velocity.x > 0 ? 1 : -1;
+    //slime.body.velocity.x = 50 * sign;
+    //if (slime.lastLTrigger !== caller) {
       // Reverse the velocity of the slime and remember the last trigger.
       //slime.body.velocity.x *= -1;
 
-      if(slime.body.blocked.right || slime.body.blocked.left) slime.body.velocity.x *= -1;
+      if(slime.body.blocked.left) slime.body.velocity.x = 50;
+      if(slime.body.blocked.right) slime.body.velocity.x = -50;
+      //if(slime.body.blocked.right) slime.body.velocity.x =
+      //   || slime.body.blocked.left) slime.body.velocity.x *= -1;
 
       //if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
-      slime.lastLTrigger = caller;
-    }
+      //slime.lastLTrigger = caller;
+    //}
 
-    //if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
+    if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
   }
 };
 

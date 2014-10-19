@@ -8,7 +8,7 @@ GameCtrl.Berserkers = function(ctx){
   this.troopCount = 0;
   this.orderRate = 1000;
   this.range = 1;
-  this.damage = 4;
+  this.damage = 1;
 
   this.nextOrder = 0;
 };

@@ -7,11 +7,15 @@ GameCtrl.Destructibles = function(game, map, pickups){
   this.pickups = pickups;
 
   this.spawnPoints = this.map.objects.destructibleSpawn;
-  console.log(this.spawnPoints);
+
   this.map.createFromObjects('destructibleSpawn', 50, 'skullnest1', 0, true, false, this, Phaser.Sprite, true);
 
   this.forEach(function (item) {
-    console.log(item);
+      if(this.game.rnd.normal() < 0) {
+        item.kill();
+        return;
+      }
+
       game.physics.arcade.enable(item);
       item.body.immovable = true;
       item.kill = function() {

@@ -8,7 +8,7 @@ GameCtrl.Bat = function(game, player, pickups){
 
   this.attackRate = 1000;
   this.range = 0;
-  this.damage = .5;
+  this.damage = 2;
 
   this.nextAttack = 0;
 

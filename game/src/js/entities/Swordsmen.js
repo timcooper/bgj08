@@ -8,7 +8,7 @@ GameCtrl.Swordsmen = function(ctx){
   this.troopCount = 0;
   this.orderRate = 500;
   this.range = 5;
-  this.damage = 1;
+  this.damage = .25;
 
   this.nextOrder = 0;
 };

@@ -347,6 +347,31 @@ GameCtrl.Player.prototype = {
 
       console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
     }else{
+      this.sprite.kill();
+
+      var spr_bg = this.game.add.graphics(0, 0);
+      spr_bg.beginFill(0x000000, 1);
+      spr_bg.drawRect(0, 0, this.game.width, this.game.height);
+      spr_bg.alpha = 0;
+      spr_bg.endFill();
+
+      var s = this.game.add.tween(spr_bg)
+      s.to({ alpha: 1 }, 500, null)
+      s.onComplete.add(function() {
+        this.game.state.start('Title');
+      }, this)
+      s.start();
+
+      /*var spr_bg = this.game.add.graphics(0, 0);
+      spr_bg.beginFill(this.fadeColor, 1);
+      spr_bg.drawRect(0, 0, this.game.width, this.game.height);
+      spr_bg.alpha = 1;
+      spr_bg.endFill();
+
+      s = this.game.add.tween(spr_bg)
+      s.to({ alpha: 0 }, 600, null)
+      s.start();*/
+
       console.log("UDIED");
     }
     this.updateHealthHud();
