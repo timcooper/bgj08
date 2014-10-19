@@ -31,6 +31,8 @@
 
     this.isHurtable = true;
 
+    this.hasDoubleJump = false;
+
     this.canJump = true;
     this.canDoubleJump = false;
 
@@ -235,7 +237,10 @@ GameCtrl.Player.prototype = {
   },
 
   pickup: function (player, pickup) {
-    if(this.currentHealth < this.health) {
+    if(pickup.isKey) {
+      pickup.kill();
+      this.hasDoubleJump = true;
+    }else if(this.currentHealth < this.health) {
       pickup.kill();
       if(this.currentHealth + .5 > this.health) {
         this.currentHealth = this.health;
@@ -254,7 +259,7 @@ GameCtrl.Player.prototype = {
   },
 
   dJumpCheck: function() {
-    if(!this.sprite.body.blocked.down && this.canDoubleJump) {
+    if(!this.sprite.body.blocked.down && this.canDoubleJump && this.hasDoubleJump) {
       this.jump();
       this.canDoubleJump = false;
     }

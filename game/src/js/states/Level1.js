@@ -151,6 +151,8 @@ var enemies;
       this.enemies.create();
 
 			this.enemies.spawn();
+
+			this.pickups.spawnKey(map.objects.keySpawn[0].x, map.objects.keySpawn[0].y);
 		},
 
 		update: function () {
