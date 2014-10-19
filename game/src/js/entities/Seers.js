@@ -1,8 +1,9 @@
 (function(){
 'use strict';
 
-GameCtrl.Seers = function(game){
-  this.game = game;
+GameCtrl.Seers = function(ctx){
+  this.game = ctx.game;
+  this.player = ctx;
 
   this.troopCount = 0;
   this.orderRate = 500;
@@ -14,24 +15,7 @@ GameCtrl.Seers = function(game){
 
 GameCtrl.Seers.prototype = {
   attack: function(player) {
-    if(this.troopCount > 0) {
-      if (this.game.time.now > this.nextOrder && this.troops.countDead() > 0)
-      {
-          this.nextOrder = this.game.time.now + this.orderRate;
-
-          var swordsman = this.troops.getFirstExists(false);
-
-          if(swordsman) {
-            swordsman.reset(player.sprite.x + 5, player.sprite.y);
-            swordsman.lifespan = 500;
-
-            swordsman.scale.x = player.sprite.scale.x;
-            swordsman.body.velocity.x = player.sprite.scale.x * 500;
-
-            this.troopCount--;
-          }
-      }
-    }
+    this.update();
   },
 
   addTroops: function(amount) {
@@ -44,18 +28,42 @@ GameCtrl.Seers.prototype = {
       this.troops.enableBody = true;
       this.troops.physicsBodyType = Phaser.Physics.ARCADE;
 
-      this.troops.createMultiple(30, 'swordsman');
+      this.troops.createMultiple(30, 'seer');
       this.troops.setAll('anchor.x', 0.5);
       this.troops.setAll('anchor.y', 0.5);
-      //this.troops.setAll('outOfBoundsKill', true);
-      //this.troops.setAll('checkWorldBounds', true);
-
-      this.troops.enableBody = true;
-      this.troops.physicsBodyType = Phaser.Physics.ARCADE;
   },
 
   update: function () {
+    if(this.troopCount > 0) {
+      if (this.game.time.now > this.nextOrder && this.troops.countDead() > 0)
+      {
+          this.nextOrder = this.game.time.now + this.orderRate;
 
+          var troop = this.troops.getFirstExists(false);
+
+          if(troop) {
+            troop.lastHit = null;
+            troop.reset(this.player.sprite.x + 5, this.player.sprite.y);
+            troop.lifespan = 500;
+
+            troop.scale.x = this.player.sprite.scale.x;
+            troop.body.velocity.x = this.player.sprite.scale.x * 500;
+
+            troop.immovable = true;
+
+            this.troopCount--;
+          }
+      }
+    }
+
+    this.game.physics.arcade.overlap(this.troops, this.player.enemies.enemies[0].slimes, this.hit, null, this );
+
+  },
+
+  hit: function (callee, enemy) {
+    if(callee.lastHit != enemy) enemy.damage(this.damage);
+    enemy.body.velocity.x = callee.body.velocity.x * 0.05;
+    callee.lastHit = enemy;
   }
 };
 

@@ -31,11 +31,6 @@ GameCtrl.Swordsmen.prototype = {
       this.troops.createMultiple(30, 'swordsman');
       this.troops.setAll('anchor.x', 0.5);
       this.troops.setAll('anchor.y', 0.5);
-      //this.troops.setAll('outOfBoundsKill', true);
-      //this.troops.setAll('checkWorldBounds', true);
-
-      this.troops.enableBody = true;
-      this.troops.physicsBodyType = Phaser.Physics.ARCADE;
   },
 
   update: function () {
@@ -47,6 +42,7 @@ GameCtrl.Swordsmen.prototype = {
           var troop = this.troops.getFirstExists(false);
 
           if(troop) {
+            troop.lastHit = null;
             troop.reset(this.player.sprite.x + 5, this.player.sprite.y);
             troop.lifespan = this.range * 100;
 
@@ -67,8 +63,9 @@ GameCtrl.Swordsmen.prototype = {
   },
 
   hit: function (callee, enemy) {
-    if(this.lastHit != enemy) enemy.damage(this.damage);
-    this.lastHit = enemy;
+    if(callee.lastHit != enemy) enemy.damage(this.damage);
+    enemy.body.velocity.x = callee.body.velocity.x * 0.2;
+    callee.lastHit = enemy;
   }
 };
 
