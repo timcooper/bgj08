@@ -150,14 +150,12 @@ GameCtrl.Player.prototype = {
 
     if(!RIGHT && LEFT){
       this.go('left');
-      this.sprite.torso.animations.play(this.sprite.scale.x > -1 ? 'rWalk' : 'walk');
+      if(!UP)
+        this.sprite.torso.animations.play(this.sprite.scale.x > -1 ? 'rWalk' : 'walk');
     }else if (!LEFT && RIGHT){
       this.go('right');
-      this.sprite.torso.animations.play(this.sprite.scale.x < 1 ? 'rWalk' : 'walk');
-    }else{
-      this.sprite.torso.animations.stop();
-
-      this.sprite.torso.frame = 0;
+      if(!UP)
+        this.sprite.torso.animations.play(this.sprite.scale.x < 1 ? 'rWalk' : 'walk');
     }
 
     //var isInAir=(!body.blocked.down && !body.blocked.left && !body.blocked.right);
@@ -176,6 +174,11 @@ GameCtrl.Player.prototype = {
       if (isInAir && body.velocity.y < 0){
         body.velocity.y=0;
       }
+    }
+    if(!UP && !RIGHT && !LEFT) {
+      this.sprite.torso.animations.stop();
+
+      this.sprite.torso.frame = 0;
     }
 
     body.gravity.set(0, GRAVITY);
@@ -231,6 +234,11 @@ GameCtrl.Player.prototype = {
     }
   },
 
+  pickup: function (player, pickup) {
+    pickup.kill();
+    console.log(pickup);
+  },
+
   addTroops: function(type, amount) {
     this.orders[type].addTroops(amount);
   },
@@ -258,6 +266,9 @@ GameCtrl.Player.prototype = {
         this.sprite.body.velocity.x = -this.sprite.body.velocity.x - JUMP_BACK_OFF;
       }
     }*/
+
+    this.sprite.torso.animations.stop();
+    this.sprite.torso.frame = 6;
     this.sprite.body.velocity.y = -YSPEED;
 
   },
