@@ -80,9 +80,10 @@ var enemies;
 
 			this.game.stage.disableVisibilityChange = true;
 
+			this.game.add.tileSprite(0, 0, 800, 800, 'bgCave');
 
 			var map = this.add.tilemap('level1Map');
-			map.addTilesetImage('cave');
+			map.addTilesetImage('heltile');
 
       map.layers.forEach(function(l){
         var layer=map.createLayer(l.name);
