@@ -67,7 +67,6 @@ GameCtrl.Swordsmen.prototype = {
   },
 
   hit: function (callee, enemy) {
-    console.log(this.lastHit);
     if(this.lastHit != enemy) enemy.damage(this.damage);
     this.lastHit = enemy;
   }
