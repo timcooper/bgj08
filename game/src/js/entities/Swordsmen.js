@@ -8,7 +8,7 @@ GameCtrl.Swordsmen = function(ctx){
   this.troopCount = 0;
   this.orderRate = 500;
   this.range = 5;
-  this.damage = .25;
+  this.damage = .5;
 
   this.nextOrder = 0;
 };
@@ -68,6 +68,8 @@ GameCtrl.Swordsmen.prototype = {
 
   hit: function (callee, enemy) {
     if(callee.lastHit != enemy) enemy.damage(this.damage);
+    enemy.tint = 0xff0000;
+    enemy.hurtTime = this.game.time.now;
     enemy.body.velocity.x = callee.body.velocity.x * 0.2;
     callee.lastHit = enemy;
   }

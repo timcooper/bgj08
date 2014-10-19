@@ -84,6 +84,8 @@ GameCtrl.Berserkers.prototype = {
 
   hit: function (callee, enemy) {
     if(callee.lastHit != enemy) enemy.damage(this.damage);
+    enemy.tint = 0xff0000;
+    enemy.hurtTime = this.game.time.now;
     enemy.body.velocity.x = callee.body.velocity.x * 0.4;
     callee.lastHit = enemy;
   }

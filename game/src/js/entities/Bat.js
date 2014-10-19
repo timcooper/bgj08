@@ -12,7 +12,7 @@ GameCtrl.Bat = function(game, player, pickups){
 
   this.nextAttack = 0;
 
-  this.health = 2;
+  this.health = 1;
 };
 
 GameCtrl.Bat.prototype = {
@@ -53,6 +53,11 @@ GameCtrl.Bat.prototype = {
   },
 
   update: function (player, level) {
+    this.bats.forEach(function(bat) {
+      if(bat.tint == 0xff0000 && this.game.time.now > bat.hurtTime + 100) {
+        bat.tint = 0xffffff;
+      }
+    }, this);
     /*this.bats.forEachAlive(function (item) {
       this.game.add.tween(item.body.velocity).to( { y: -50 }, 500, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
     }, this, false);*/

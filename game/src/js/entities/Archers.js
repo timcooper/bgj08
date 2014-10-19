@@ -8,7 +8,7 @@ GameCtrl.Archers = function(ctx){
   this.troopCount = 0;
   this.orderRate = 400;
   this.range = 10;
-  this.damage = .2;
+  this.damage = .25;
 
   this.nextOrder = 0;
 };
@@ -71,6 +71,8 @@ GameCtrl.Archers.prototype = {
   hit: function (callee, enemy) {
     callee.kill();
     enemy.damage(this.damage);
+    enemy.tint = 0xff0000;
+    enemy.hurtTime = this.game.time.now;
     enemy.body.velocity.x = callee.body.velocity.x * 0.05;
     callee.lastHit = enemy;
   }

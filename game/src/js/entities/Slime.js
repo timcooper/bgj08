@@ -54,13 +54,12 @@ GameCtrl.Slime.prototype = {
   },
 
   update: function (player, level, map, reverseTriggers) {
-    /*this.slimes.forEachAlive(function(slime) {
-      if(map.getTileWorldXY(slime.body.x, slime.body.y,16,16, level) === null) {
-        slime.tint = 0xff0000;
-        console.log('fall');
+    this.slimes.forEach(function(slime) {
+      if(slime.tint == 0xff0000 && this.game.time.now > slime.hurtTime + 100) {
+        slime.tint = 0xffffff;
       }
-    })*/
-    //this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
+    }, this);
+
     this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
     this.game.physics.arcade.collide(this.slimes, level, null, this.collideLevel);
     this.game.physics.arcade.overlap(this.slimes, reverseTriggers, null, this.collideLevelR);
@@ -73,8 +72,8 @@ GameCtrl.Slime.prototype = {
       this.hurtTime = this.game.time.now;
       this.isHurtable = false;
 
-      this.sprite.torso.tint = 0xff0000;
-      this.sprite.arm.tint = 0xff0000;
+      slime.torso.tint = 0xff0000;
+      slime.arm.tint = 0xff0000;
 
       console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
     }else{

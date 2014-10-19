@@ -344,14 +344,14 @@ GameCtrl.Player.prototype = {
 
       this.sprite.torso.tint = 0xff0000;
       this.sprite.arm.tint = 0xff0000;
-
-      console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
     }else{
 
       this.sprite.torso.tint = 0xff0000;
       this.sprite.arm.tint = 0xff0000;
 
       var spr_bg = this.game.add.graphics(0, 0);
+
+      spr_bg.fixedToCamera = true;
       spr_bg.beginFill(0x000000, 1);
       spr_bg.drawRect(0, 0, this.game.width, this.game.height);
       spr_bg.alpha = 0;
@@ -364,17 +364,6 @@ GameCtrl.Player.prototype = {
       }, this)
       s.start();
 
-      /*var spr_bg = this.game.add.graphics(0, 0);
-      spr_bg.beginFill(this.fadeColor, 1);
-      spr_bg.drawRect(0, 0, this.game.width, this.game.height);
-      spr_bg.alpha = 1;
-      spr_bg.endFill();
-
-      s = this.game.add.tween(spr_bg)
-      s.to({ alpha: 0 }, 600, null)
-      s.start();*/
-
-      console.log("UDIED");
     }
     this.updateHealthHud();
   },
