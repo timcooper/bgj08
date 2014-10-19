@@ -53,10 +53,17 @@ GameCtrl.Slime.prototype = {
     this.slimes.callAll('play', null, 'bounce');
   },
 
-  update: function (player, level) {
+  update: function (player, level, map, reverseTriggers) {
+    /*this.slimes.forEachAlive(function(slime) {
+      if(map.getTileWorldXY(slime.body.x, slime.body.y,16,16, level) === null) {
+        slime.tint = 0xff0000;
+        console.log('fall');
+      }
+    })*/
     //this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
     this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
     this.game.physics.arcade.collide(this.slimes, level, null, this.collideLevel);
+    this.game.physics.arcade.overlap(this.slimes, reverseTriggers, null, this.collideLevelR);
   },
 
   hurt: function(callee, caller) {
@@ -83,11 +90,31 @@ GameCtrl.Slime.prototype = {
     }
   },
 
-  collideLevel: function(slime, caller) {
-    if(slime.body.blocked.right) slime.body.velocity.x = -50;
-    if(slime.body.blocked.left) slime.body.velocity.x = 50;
+  collideLevelR: function(slime, caller) {
+    if (slime.lastTrigger !== caller) {
+      // Reverse the velocity of the slime and remember the last trigger.
+      slime.body.velocity.x *= -1;
+      slime.lastTrigger = caller;
+    }
 
-    if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
+    //if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
+  },
+
+  collideLevel: function(slime, caller) {
+    var sign = slime.body.velocity.x > 0 ? 1 : -1;
+    slime.body.velocity.x = 50 * sign;
+    console.log(caller);
+    if (slime.lastLTrigger !== caller) {
+      // Reverse the velocity of the slime and remember the last trigger.
+      //slime.body.velocity.x *= -1;
+
+      if(slime.body.blocked.right || slime.body.blocked.left) slime.body.velocity.x *= -1;
+
+      //if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
+      slime.lastLTrigger = caller;
+    }
+
+    //if(slime.body.velocity.x !== 50 || slime.body.velocity.x !== -50) slime.body.acceleration = 25;
   }
 };
 

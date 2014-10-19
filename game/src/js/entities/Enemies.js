@@ -40,6 +40,16 @@ GameCtrl.Enemies.prototype = {
   },
 
   create: function () {
+
+      this.reverseTriggers = this.game.add.group();
+      this.map.createFromObjects('slimeBarrier', 48, null, 0, true, false, this.reverseTriggers, Phaser.Sprite, true);
+
+      this.reverseTriggers.forEach(function (item) {
+          game.physics.arcade.enable(item);
+          item.width = 16;
+          item.body.immovable = true;
+      }, this, false);
+
       this.spawnPoints = this.map.objects.enemySpawn;
 
       this.enemies = [
@@ -55,7 +65,7 @@ GameCtrl.Enemies.prototype = {
   update: function (tilesCollision) {
 
     for (var i = 0; i < this.enemies.length; i += 1) {
-      this.enemies[i].update(this.player, tilesCollision);
+      this.enemies[i].update(this.player, tilesCollision, this.map, this.reverseTriggers);
     }
   }
 };
