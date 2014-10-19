@@ -34,6 +34,7 @@ GameCtrl.Preloader.prototype = {
     this.load.image('cave', '../assets/cave.png');
     this.load.spritesheet('player', '../assets/images/hero.png', 32, 32);
     this.load.spritesheet('slime', '../assets/images/slime.png', 16, 16);
+		this.load.spritesheet('bat', '../assets/images/bat.png', 16, 16);
 
 	},
 

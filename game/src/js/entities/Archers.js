@@ -59,6 +59,7 @@ GameCtrl.Archers.prototype = {
     }
 
     this.game.physics.arcade.overlap(this.troops, this.player.enemies.enemies[0].slimes, this.hit, null, this );
+    this.game.physics.arcade.overlap(this.troops, this.player.enemies.enemies[1].bats, this.hit, null, this );
     this.game.physics.arcade.overlap(this.troops, this.player.destructibles, this.hitD, null, this );
 
   },

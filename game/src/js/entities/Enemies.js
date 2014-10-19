@@ -27,10 +27,8 @@ GameCtrl.Enemies.prototype = {
 
           for (var i = 0; i < this.spawnPoints.length; i += 1) {
             //if(spawnBox.contains(this.spawnPoints[i].x, this.spawnPoints[i].y)) {
-              for (var j = 0; j < this.enemies.length; j += 1) {
-                this.enemies[j].spawn(this.spawnPoints[i].x, this.spawnPoints[i].y, 5);
-                this.currentEnemies+5;
-              }
+            this.enemies[this.game.rnd.integerInRange(0,1)].spawn(this.spawnPoints[i].x, this.spawnPoints[i].y, 5);
+            this.currentEnemies+5;
             //}
           }
 
@@ -45,7 +43,8 @@ GameCtrl.Enemies.prototype = {
       this.spawnPoints = this.map.objects.enemySpawn;
 
       this.enemies = [
-        new GameCtrl.Slime(this.game, this.player, this.pickups)
+        new GameCtrl.Slime(this.game, this.player, this.pickups),
+        new GameCtrl.Bat(this.game, this.player, this.pickups)
       ];
 
       for (var i = 0; i < this.enemies.length; i += 1) {
