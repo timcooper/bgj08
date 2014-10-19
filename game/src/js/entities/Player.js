@@ -11,9 +11,10 @@
   var DASH_COOLDOWN = 1000;
   var INVULN_TIME = 75;
 
-  GameCtrl.Player = function(game, tilesCollision){
+  GameCtrl.Player = function(game, tilesCollision, destructibles){
     this.game = game;
     this.tilesCollision = tilesCollision;
+    this.destructibles = destructibles;
     this.physics = game.physics;
     this.add = game.add;
     this.sprite = null;

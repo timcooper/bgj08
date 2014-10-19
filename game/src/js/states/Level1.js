@@ -59,8 +59,11 @@ var enemies;
 
 	GameCtrl.Level1.prototype = {
 
-		initPlayer:function(spawnPoint){
-			var player = new GameCtrl.Player(this.game, this.tilesCollision);
+		initPlayer:function(spawnPoint, map){
+			var destructibles = new GameCtrl.Destructibles(this.game, map);
+			destructibles.create();
+
+			var player = new GameCtrl.Player(this.game, this.tilesCollision, destructibles);
 
 			PLAYER=player;
 			player.create(spawnPoint.x,spawnPoint.y);
@@ -135,8 +138,7 @@ var enemies;
 
       this.game.stage.disableVisibilityChange = true;
 
-
-			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0]);
+			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0], map);
       this.realPlayer.addTroops('swordsmen', 50);
       this.realPlayer.addTroops('archers', 50);
       this.realPlayer.addTroops('seers', 50);

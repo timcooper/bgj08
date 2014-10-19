@@ -73,7 +73,12 @@ GameCtrl.Berserkers.prototype = {
     }
 
     this.game.physics.arcade.overlap(this.troops, this.player.enemies.enemies[0].slimes, this.hit, null, this );
+    this.game.physics.arcade.overlap(this.troops, this.player.destructibles, this.hitD, null, this );
 
+  },
+
+  hitD: function (callee, dest) {
+    dest.kill();
   },
 
   hit: function (callee, enemy) {
