@@ -47,7 +47,7 @@
 GameCtrl.Player.prototype = {
   create: function (x, y) {
 
-    var s = this.game.add.sprite(32,32,null);
+    var s = this.game.add.sprite(x,y,null);
     s.anchor.setTo(.5);
 
     s.arm = this.game.add.sprite(3,-5, 'heroarm');
@@ -70,8 +70,8 @@ GameCtrl.Player.prototype = {
     s.body.maxVelocity.setTo(this.moveSpeed, MAX_SPEED_Y); // x, y
 
     s.body.collideWorldBounds = true;
-    s.body.gravity.set(0, GRAVITY);
-    s.body.allowGravity = true;
+    //s.body.gravity.set(0, GRAVITY);
+    //s.body.allowGravity = true;
     s.body.speedxPunish=0;
 
     this.sprite.body.width = 16;

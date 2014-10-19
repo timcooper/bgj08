@@ -59,12 +59,11 @@ var enemies;
 
 	GameCtrl.Level1.prototype = {
 
-		initPlayer:function(x,y){
+		initPlayer:function(spawnPoint){
 			var player = new GameCtrl.Player(this.game, this.tilesCollision);
 
 			PLAYER=player;
-
-			player.create(x,y);
+			player.create(spawnPoint.x,spawnPoint.y);
 			return player;
 		},
 
@@ -86,39 +85,40 @@ var enemies;
         var layer=map.createLayer(l.name);
 
         if(l.name==='collision'){
-                var firstgid=map.tilesets[map.getTilesetIndex('collision')].firstgid;
-                l.data.forEach(function(e){
-                    e.forEach(function(t){
-                      if (t.index >-1) {
-                        t.slopeIndex = t.index - firstgid;
-                      }
-
-                        if (t.index < 0) {
-                            // none
-                        } else if (t.index - firstgid === 7) {
-                            // full square is by default
-                        } else if (t.index - firstgid === 6) {
-                            t.slope = 'HALF_TRIANGLE_BOTTOM_LEFT';
-                        } else if (t.index - firstgid === 1) {
-                            t.slope = 'HALF_TRIANGLE_BOTTOM_RIGHT';
-                        }else  if (t.index - firstgid === 3) {
-                          t.slope = 'RECTANGLE_BOTTOM';
-                        }else{
-                          //console.log(t.index - firstgid);
-                        }
-                        // you could also add custom collide function;
-                        // t.slopeFunction = function (i, body, tile) { custom code }
-                    });
-                });
-
-                var collisionTiles = [];
-                for(var i=firstgid;i<firstgid+18; i += 1){
-                    collisionTiles.push(i);
+					this.testLayer = layer;
+          var firstgid=map.tilesets[map.getTilesetIndex('collision')].firstgid;
+          l.data.forEach(function(e){
+              e.forEach(function(t){
+                if (t.index >-1) {
+                  t.slopeIndex = t.index - firstgid;
                 }
-                map.setCollision(collisionTiles, true, layer);
 
-                this.tilesCollision=layer;
-            }
+                  if (t.index < 0) {
+                      // none
+                  } else if (t.index - firstgid === 7) {
+                      // full square is by default
+                  } else if (t.index - firstgid === 6) {
+                      t.slope = 'HALF_TRIANGLE_BOTTOM_LEFT';
+                  } else if (t.index - firstgid === 1) {
+                      t.slope = 'HALF_TRIANGLE_BOTTOM_RIGHT';
+                  }else  if (t.index - firstgid === 3) {
+                    t.slope = 'RECTANGLE_BOTTOM';
+                  }else{
+                    //console.log(t.index - firstgid);
+                  }
+                  // you could also add custom collide function;
+                  // t.slopeFunction = function (i, body, tile) { custom code }
+              });
+          });
+
+          var collisionTiles = [];
+          for(var i=firstgid;i<firstgid+18; i += 1){
+              collisionTiles.push(i);
+          }
+          map.setCollision(collisionTiles, true, layer);
+
+          this.tilesCollision=layer;
+        }
 
 
         layer.resizeWorld();
@@ -136,13 +136,17 @@ var enemies;
       this.game.stage.disableVisibilityChange = true;
 
 
-			this.realPlayer=this.initPlayer(Math.floor(Math.random()*600) + 100, 8);
+			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0]);
       this.realPlayer.addTroops('swordsmen', 50);
       this.realPlayer.addTroops('archers', 50);
       this.realPlayer.addTroops('seers', 50);
       this.realPlayer.addTroops('berserkers', 50);
 			this.player = this.realPlayer.sprite;
 
+      this.enemies = new GameCtrl.Enemies(this.game, this.player, map);
+      this.enemies.create();
+
+			this.enemies.spawn();
 		},
 
 		update: function () {
@@ -154,6 +158,8 @@ var enemies;
 			this.physics.arcade.collideSpriteVsTilemapLayer(this.player, this.tilesCollision);
 
 			this.realPlayer.update();
+
+			this.enemies.update(this.testLayer);
 
 		},
 		render: function(){

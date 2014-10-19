@@ -18,6 +18,7 @@ GameCtrl.Boot.prototype = {
     create: function () {
         self.game.stage.smoothed = false;
         self.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.physics.arcade.gravity.y = 1200;
         self.game.state.start('Preloader');
     }
 };

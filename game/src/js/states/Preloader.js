@@ -30,7 +30,7 @@ GameCtrl.Preloader.prototype = {
     this.load.tilemap('level1Map', '../assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('cave', '../assets/cave.png');
     this.load.spritesheet('player', '../assets/walksheet.png', 32, 32);
-    this.load.spritesheet('slime', '../assets/slime.png', 16, 16);
+    this.load.spritesheet('slime', '../assets/images/slime.png', 16, 16);
 
 	},
 
