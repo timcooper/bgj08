@@ -23,6 +23,9 @@ GameCtrl.Preloader.prototype = {
 		//	as the files below are loaded in.
 		this.load.setPreloadSprite(this.preloadBar);
 
+		this.load.image('title', '../assets/images/HELtitle.png');
+		this.load.image('jarl', '../assets/images/jarlleap.png');
+
     this.load.image('swordsman', '../assets/swordsman.png');
     this.load.image('heroarm', '../assets/hero_arm.png');
     this.load.image('arrow', '../assets/images/arrow.png');
@@ -46,7 +49,7 @@ GameCtrl.Preloader.prototype = {
 	},
 
 	update: function () {
-		this.game.state.start('Level1');
+		this.game.state.start('Title');
 	}
 
 };
