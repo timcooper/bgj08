@@ -15,9 +15,9 @@ GameCtrl.Pickups.prototype = Object.create(Phaser.Group.prototype);
 GameCtrl.Pickups.prototype.constructor = GameCtrl.Pickups;
 
 GameCtrl.Pickups.prototype.spawnKey = function(x, y) {
-  var pickup = this.create(x, y, 'pickups', 11);
+  var pickup = this.create(x, y-25, 'pickups', 11);
   pickup.isKey = true;
-  this.game.add.tween(pickup).to( { y: y-5 }, 500, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
+  this.game.add.tween(pickup).to( { y: y-30 }, 500, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
 }
 
 GameCtrl.Pickups.prototype.spawnEnemyLoot = function(x, y) {
