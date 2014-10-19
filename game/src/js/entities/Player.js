@@ -11,12 +11,13 @@
   var DASH_COOLDOWN = 1000;
   var INVULN_TIME = 75;
 
-  GameCtrl.Player = function(game, tilesCollision, destructibles){
+  GameCtrl.Player = function(game, tilesCollision, destructibles, hud){
     this.game = game;
     this.tilesCollision = tilesCollision;
     this.destructibles = destructibles;
     this.physics = game.physics;
     this.add = game.add;
+    this.hud = hud;
     this.sprite = null;
     this.keyboard = this.game.input.keyboard;
 
@@ -188,15 +189,19 @@ GameCtrl.Player.prototype = {
     if(this.cursors.w1.isDown) {
         this.activeOrder = this.orders.swordsmen;
         this.activeOrder.create();
+        this.updateOrderHud('Swordsmen');
     }else if(this.cursors.w2.isDown) {
         this.activeOrder = this.orders.archers;
         this.activeOrder.create();
+        this.updateOrderHud('Archers');
     }else if(this.cursors.w3.isDown) {
         this.activeOrder = this.orders.seers;
         this.activeOrder.create();
+        this.updateOrderHud('Seers');
     }else if(this.cursors.w4.isDown) {
         this.activeOrder = this.orders.berserkers;
         this.activeOrder.create();
+        this.updateOrderHud('Berserkers');
     }
 
     if (this.game.input.activePointer.isDown) {
@@ -236,6 +241,14 @@ GameCtrl.Player.prototype = {
     }
   },
 
+  updateHealthHud: function() {
+    this.hud.setHealth(this.currentHealth);
+  },
+
+  updateOrderHud: function(order) {
+    this.hud.setOrder(order);
+  },
+
   pickup: function (player, pickup) {
     if(pickup.isKey) {
       pickup.kill();
@@ -247,6 +260,7 @@ GameCtrl.Player.prototype = {
       }else{
         this.currentHealth += .5;
       }
+      this.updateHealthHud();
     }
   },
 
@@ -335,6 +349,7 @@ GameCtrl.Player.prototype = {
     }else{
       console.log("UDIED");
     }
+    this.updateHealthHud();
   },
 
   stop: function() {

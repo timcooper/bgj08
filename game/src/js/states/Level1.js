@@ -63,7 +63,7 @@ var enemies;
 			var destructibles = new GameCtrl.Destructibles(this.game, map, this.pickups);
 			destructibles.create();
 
-			var player = new GameCtrl.Player(this.game, this.tilesCollision, destructibles);
+			var player = new GameCtrl.Player(this.game, this.tilesCollision, destructibles, this.hud);
 
 			PLAYER=player;
 			player.create(spawnPoint.x,spawnPoint.y);
@@ -131,16 +131,18 @@ var enemies;
 
 
       this.game.time.advancedTiming = true;
-      this.fpsText = this.game.add.text(
+      /*this.fpsText = this.game.add.text(
         5, 5, '', { font: '10px Arial', fill: '#ffffff' }
       );
-      this.fpsText.fixedToCamera = true;
+      this.fpsText.fixedToCamera = true;*/
+
+			this.hud = new GameCtrl.HUD(this.game);
 
       this.game.stage.disableVisibilityChange = true;
 
 			this.pickups = new GameCtrl.Pickups(this.game);
 
-			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0], map);
+			this.realPlayer=this.initPlayer(map.objects.playerSpawn[0], map, this.hud);
       this.realPlayer.addTroops('swordsmen', 50);
       this.realPlayer.addTroops('archers', 50);
       this.realPlayer.addTroops('seers', 50);
@@ -156,9 +158,9 @@ var enemies;
 		},
 
 		update: function () {
-			if (this.game.time.fps !== 0) {
+			/*if (this.game.time.fps !== 0) {
 				this.fpsText.setText(this.game.time.fps + ' FPS');
-			}
+			}*/
 
 			//this.collideSpriteVsTilemapLayer(object1, object2, collideCallback, processCallback, callbackContext);
 			this.physics.arcade.collideSpriteVsTilemapLayer(this.player, this.tilesCollision);
