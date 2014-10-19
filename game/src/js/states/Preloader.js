@@ -25,6 +25,8 @@ GameCtrl.Preloader.prototype = {
 
     this.load.image('swordsman', '../assets/swordsman.png');
     this.load.image('heroarm', '../assets/hero_arm.png');
+    this.load.image('arrow', '../assets/images/arrow.png');
+    this.load.image('berserker', '../assets/images/berserker.png');
     this.load.tilemap('level1Map', '../assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('cave', '../assets/cave.png');
     this.load.spritesheet('player', '../assets/walksheet.png', 32, 32);

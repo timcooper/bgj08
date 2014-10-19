@@ -81,7 +81,11 @@ GameCtrl.Player.prototype = {
     this.cursors = {
       up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
       left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
-      right: this.game.input.keyboard.addKey(Phaser.Keyboard.D)
+      right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+      w1: this.game.input.keyboard.addKey(Phaser.Keyboard.ONE),
+      w2: this.game.input.keyboard.addKey(Phaser.Keyboard.TWO),
+      w3: this.game.input.keyboard.addKey(Phaser.Keyboard.THREE),
+      w4: this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR)
     };
 
     this.cursors.up.onDown.add(this.dJumpCheck, this);
@@ -98,6 +102,16 @@ GameCtrl.Player.prototype = {
       }
       this.rDashPress = this.game.time.now;
     }, this);
+
+    this.orders = {
+      'swordsmen': new GameCtrl.Swordsmen(this.game),
+      'archers': new GameCtrl.Archers(this.game),
+      'seers': new GameCtrl.Seers(this.game),
+      'berserkers': new GameCtrl.Berserkers(this.game)
+    };
+
+    this.activeOrder = this.orders.swordsmen;
+    this.activeOrder.create();
 
   },
   update: function() {
@@ -160,6 +174,24 @@ GameCtrl.Player.prototype = {
 
     body.gravity.set(0, GRAVITY);
 
+    if(this.cursors.w1.isDown) {
+        this.activeOrder = this.orders.swordsmen;
+        this.activeOrder.create();
+    }else if(this.cursors.w2.isDown) {
+        this.activeOrder = this.orders.archers;
+        this.activeOrder.create();
+    }else if(this.cursors.w3.isDown) {
+        this.activeOrder = this.orders.seers;
+        this.activeOrder.create();
+    }else if(this.cursors.w4.isDown) {
+        this.activeOrder = this.orders.berserkers;
+        this.activeOrder.create();
+    }
+
+    if (this.game.input.activePointer.isDown) {
+        this.orderAttack();
+    }
+
     if(body.deltaY() > 0){
       var _mapData = this.tilesCollision.getTiles(
         body.position.x - body.tilePadding.x,
@@ -185,6 +217,14 @@ GameCtrl.Player.prototype = {
         }
       }
     }
+  },
+
+  addTroops: function(type, amount) {
+    this.orders[type].addTroops(amount);
+  },
+
+  orderAttack: function() {
+    this.activeOrder.attack(this);
   },
 
   dJumpCheck: function() {

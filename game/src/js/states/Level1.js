@@ -137,6 +137,10 @@ var enemies;
 
 
 			this.realPlayer=this.initPlayer(Math.floor(Math.random()*600) + 100, 8);
+      this.realPlayer.addTroops('swordsmen', 50);
+      this.realPlayer.addTroops('archers', 50);
+      this.realPlayer.addTroops('seers', 50);
+      this.realPlayer.addTroops('berserkers', 50);
 			this.player = this.realPlayer.sprite;
 
 		},
