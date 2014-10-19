@@ -4,7 +4,6 @@
 GameCtrl.Destructibles = function(game, map, pickups){
   Phaser.Group.call(this, game);
   this.map = map;
-  console.log(pickups);
   this.pickups = pickups;
 
   this.spawnPoints = this.map.objects.destructibleSpawn;
