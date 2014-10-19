@@ -68,7 +68,8 @@ GameCtrl.Archers.prototype = {
   },
 
   hit: function (callee, enemy) {
-    if(callee.lastHit != enemy) enemy.damage(this.damage);
+    callee.kill();
+    enemy.damage(this.damage);
     enemy.body.velocity.x = callee.body.velocity.x * 0.05;
     callee.lastHit = enemy;
   }
