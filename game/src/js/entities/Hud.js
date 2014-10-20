@@ -6,16 +6,28 @@ GameCtrl.HUD = function(game, player){
   this.fixedToCamera = true;
   this.style = { font: '12px Arial', fill: '#ffffff', align: 'center'};
 
-  this.healthDisplay = this.game.add.text(10, 10, "Health: 10", this.style);
-  this.healthDisplay.fixedToCamera = true;
+  //this.healthDisplay = this.game.add.text(10, 10, "Health: 10", this.style);
+  //this.healthDisplay.fixedToCamera = true;
 
   //this.orderDisplay = this.game.add.text(10, game.camera.height - 20, "Order: Swordsmen", this.style);
   //this.orderDisplay.fixedToCamera = true;
 
+  this.healthDisplay = this.game.add.group();
+  this.healthDisplay.fixedToCamera = true;
+
+  this.hpend = this.create(0, 0, 'hpend', 0);
+  var blocks = this.healthDisplay.createMultiple(4, 'hpmeter', 1, true);
+  var i = 1;
+  this.healthDisplay.forEach(function(item) {
+    item.x = 8;
+    item.y = 16 + (i * 16);
+    i++;
+  });
+  this.hptail = this.create(8, 16 + (i * 16), 'hpmeter', 3);
+
   this.orderDisplay = this.game.add.group();
   this.orderDisplay.fixedToCamera = true;
 
-        //enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'baddie');
   this.swordsmenDisplay = this.create(10, game.camera.height - 20, 'ordericon', 5);
   this.archerDisplay = this.create(26, game.camera.height - 20, 'ordericon', 0);
   this.seerDisplay = this.create(42, game.camera.height - 20, 'ordericon', 3);
@@ -26,10 +38,87 @@ GameCtrl.HUD.prototype = Object.create(Phaser.Group.prototype);
 GameCtrl.HUD.prototype.constructor = GameCtrl.Hud;
 
 GameCtrl.HUD.prototype.setHealth = function(health) {
-  this.healthDisplay.destroy();
+  console.log(health);
+  health = Math.floor(health);
+  if(health < 1) health = 1;
+  console.log(health);
+  switch(health) {
+    case 10:
+      this.hpend.frame = 0;
+      this.healthDisplay.forEach(function(item) {
+        item.frame = 1;
+      });
+      this.hptail.frame = 3;
+      break;
+    case 9:
+      this.hpend.frame = 0;
+      this.healthDisplay.forEach(function(item) {
+        item.frame = 1;
+      });
+      this.hptail.frame = 4;
+      break;
+    case 8:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 0;
+      this.hptail.frame = 4;
+      break;
+    case 7:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.hptail.frame = 4;
+      break;
+    case 6:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 0;
+      this.hptail.frame = 4;
+      break;
+    case 5:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.hptail.frame = 4;
+      break;
+    case 4:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 0;
+      this.hptail.frame = 4;
+      break;
+    case 3:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 2;
+      this.hptail.frame = 4;
+      break;
+    case 2:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 2;
+      this.healthDisplay.getAt(0).frame = 0;
+      this.hptail.frame = 4;
+      break;
+    case 1:
+      this.hpend.frame = 0;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 2;
+      this.healthDisplay.getAt(0).frame = 2;
+      this.hptail.frame = 4;
+      break;
+    case 0:
+      this.hpend.frame = 1;
+      this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 2;
+      this.healthDisplay.getAt(0).frame = 2;
+      this.hptail.frame = 4;
+      break;
 
-  this.healthDisplay = this.game.add.text(10, 10, "Health: "+health, this.style);
-  this.healthDisplay.fixedToCamera = true;
+  }
 }
 
 GameCtrl.HUD.prototype.setOrder = function(troops) {

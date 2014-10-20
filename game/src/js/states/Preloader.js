@@ -27,6 +27,8 @@ GameCtrl.Preloader.prototype = {
 		this.load.image('jarl', '../assets/images/jarlleap.png');
 
 		this.load.spritesheet('ordericon', '../assets/images/ordericons.png', 16, 16);
+		this.load.spritesheet('hpmeter', '../assets/images/hpmeter.png', 16, 16);
+		this.load.spritesheet('hpend', '../assets/images/hpend.png', 32, 32);
 
 		this.load.image('bgCave', '../assets/images/bgCave.png');
 
