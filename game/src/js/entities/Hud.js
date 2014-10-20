@@ -38,11 +38,9 @@ GameCtrl.HUD.prototype = Object.create(Phaser.Group.prototype);
 GameCtrl.HUD.prototype.constructor = GameCtrl.Hud;
 
 GameCtrl.HUD.prototype.setHealth = function(health) {
-  console.log(health);
-  health = Math.floor(health);
-  if(health < 1) health = 1;
-  console.log(health);
-  switch(health) {
+  var normHealth = Math.floor(health);
+  if(normHealth == 0.5) normHealth = 1;
+  switch(normHealth) {
     case 10:
       this.hpend.frame = 0;
       this.healthDisplay.forEach(function(item) {
@@ -60,23 +58,33 @@ GameCtrl.HUD.prototype.setHealth = function(health) {
     case 8:
       this.hpend.frame = 0;
       this.healthDisplay.getAt(3).frame = 0;
+      this.healthDisplay.getAt(2).frame = 1;
+      this.healthDisplay.getAt(1).frame = 1;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 7:
       this.hpend.frame = 0;
       this.healthDisplay.getAt(3).frame = 2;
+      this.healthDisplay.getAt(2).frame = 1;
+      this.healthDisplay.getAt(1).frame = 1;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 6:
       this.hpend.frame = 0;
       this.healthDisplay.getAt(3).frame = 2;
       this.healthDisplay.getAt(2).frame = 0;
+      this.healthDisplay.getAt(1).frame = 1;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 5:
       this.hpend.frame = 0;
       this.healthDisplay.getAt(3).frame = 2;
       this.healthDisplay.getAt(2).frame = 2;
+      this.healthDisplay.getAt(1).frame = 1;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 4:
@@ -84,6 +92,7 @@ GameCtrl.HUD.prototype.setHealth = function(health) {
       this.healthDisplay.getAt(3).frame = 2;
       this.healthDisplay.getAt(2).frame = 2;
       this.healthDisplay.getAt(1).frame = 0;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 3:
@@ -91,6 +100,7 @@ GameCtrl.HUD.prototype.setHealth = function(health) {
       this.healthDisplay.getAt(3).frame = 2;
       this.healthDisplay.getAt(2).frame = 2;
       this.healthDisplay.getAt(1).frame = 2;
+      this.healthDisplay.getAt(0).frame = 1;
       this.hptail.frame = 4;
       break;
     case 2:
