@@ -150,6 +150,14 @@ var enemies;
       this.realPlayer.addTroops('berserkers', 50);
 			this.player = this.realPlayer.sprite;
 
+			var bossSpawn = map.objects.bossSpawn[0];
+			this.boss = game.add.sprite(bossSpawn.x, bossSpawn.y - 22, 'boss', 1);
+			this.boss.animations.add('fire', [1, 0, 1]);
+			this.bossFireRate = 1000;
+			this.bossFired = 0;
+
+			this.bolt = this.game.add.group();
+
       this.enemies = new GameCtrl.Enemies(this.game, this.realPlayer, map, this.pickups);
       this.enemies.create();
 
@@ -162,6 +170,19 @@ var enemies;
 			/*if (this.game.time.fps !== 0) {
 				this.fpsText.setText(this.game.time.fps + ' FPS');
 			}*/
+
+			if(this.game.time.now > this.bossFired + this.bossFireRate) {
+				this.bossFired = this.game.time.now;
+				this.boss.play('fire', 6, false);
+				var bolt = this.bolt.create(this.boss.x, this.boss.y, 'firebolt', 0);
+				this.game.physics.enable(bolt, Phaser.Physics.ARCADE);
+				bolt.enableBody = true;
+				bolt.lifespan = 2000;
+				this.game.physics.arcade.moveToObject(bolt, this.player, 50);
+				bolt.rotation = game.physics.arcade.angleBetween(bolt, this.player);
+			}
+
+			this.physics.arcade.overlap(this.bolt, this.player, null, function(bolt, player) { bolt.kill(); this.realPlayer.hurt(4); }, this);
 
 			//this.collideSpriteVsTilemapLayer(object1, object2, collideCallback, processCallback, callbackContext);
 			this.physics.arcade.collideSpriteVsTilemapLayer(this.player, this.tilesCollision);
