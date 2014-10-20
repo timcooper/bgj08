@@ -29,6 +29,7 @@ GameCtrl.Bat.prototype = {
         enemy.body.bounce.y = 0.5;
         enemy.body.collideWorldBounds = true;
         enemy.body.maxVelocity = 50;
+        enemy.body.velocity.y = (Math.random() < 0.5 ? -1 : 1) * 50;
         //enemy.body.velocity.x = 50;
         enemy.health = 2;
 
@@ -53,7 +54,8 @@ GameCtrl.Bat.prototype = {
   },
 
   update: function (player, level) {
-    this.bats.forEach(function(bat) {
+    this.bats.forEachExists(function(bat) {
+      bat.body.velocity.x = 0;
       if(bat.tint == 0xff0000 && this.game.time.now > bat.hurtTime + 100) {
         bat.tint = 0xffffff;
       }
@@ -66,22 +68,6 @@ GameCtrl.Bat.prototype = {
     this.game.physics.arcade.collide(this.bats, level, null, this.collideLevel);
   },
 
-  hurt: function(callee, caller) {
-    if(this.currentHealth - damage > 0 && this.isHurtable) {
-      this.currentHealth -= damage;
-
-      this.hurtTime = this.game.time.now;
-      this.isHurtable = false;
-
-      this.sprite.torso.tint = 0xff0000;
-      this.sprite.arm.tint = 0xff0000;
-
-      console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
-    }else{
-      console.log("UDIED");
-    }
-  },
-
   collidePlayer: function(callee, caller) {
     if(this.player.isHurtable && this.game.time.now > this.nextAttack) {
       this.nextAttack = this.game.time.now + this.attackRate;
@@ -91,10 +77,10 @@ GameCtrl.Bat.prototype = {
   },
 
   collideLevel: function(bat, caller) {
-    //if(bat.body.blocked.right) bat.body.velocity.x = -50;
-    //if(bat.body.blocked.left) bat.body.velocity.x = 50;
+    if(bat.body.blocked.up) bat.body.velocity.y = 50;
+    if(bat.body.blocked.down) bat.body.velocity.y = -50
 
-    //if(bat.body.velocity.x !== 50 || bat.body.velocity.x !== -50) bat.body.acceleration = 25;
+    if(bat.body.velocity.y !== 50 || bat.body.velocity.y !== -50) bat.body.acceleration = 25;
   }
 };
 

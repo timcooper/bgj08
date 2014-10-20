@@ -30,12 +30,15 @@ GameCtrl.Slime.prototype = {
         enemy.body.collideWorldBounds = true;
         enemy.body.gravity.y = 500;
         enemy.body.maxVelocity = 50;
-        enemy.body.velocity.x = this.game.rnd.normal() * 50;
+
+        enemy.body.velocity.x = (Math.random() < 0.5 ? -1 : 1) * 50;
         enemy.health = 2;
 
-        enemy.events.onKilled.add(function() {
-          this.pickups.spawnEnemyLoot(enemy.x, enemy.y);
-        }.bind(this));
+        if(this.game.rnd.integerInRange(0, 100) < 33) {
+          enemy.events.onKilled.add(function() {
+            this.pickups.spawnEnemyLoot(enemy.x, enemy.y);
+          }.bind(this));
+        }
       }
     }
   },
@@ -63,22 +66,6 @@ GameCtrl.Slime.prototype = {
     this.game.physics.arcade.collide(this.slimes, player.sprite, null, this.collidePlayer, this);
     this.game.physics.arcade.collide(this.slimes, level, null, this.collideLevel);
     this.game.physics.arcade.overlap(this.slimes, reverseTriggers, null, this.collideLevelR);
-  },
-
-  hurt: function(callee, caller) {
-    if(this.currentHealth - damage > 0 && this.isHurtable) {
-      this.currentHealth -= damage;
-
-      this.hurtTime = this.game.time.now;
-      this.isHurtable = false;
-
-      slime.torso.tint = 0xff0000;
-      slime.arm.tint = 0xff0000;
-
-      console.log("Player hurt for " + damage + " damage, " + this.currentHealth + " HP left.");
-    }else{
-      console.log("UDIED");
-    }
   },
 
   collidePlayer: function(callee, caller) {

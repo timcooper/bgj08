@@ -1802,6 +1802,33 @@
          "width":50,
          "x":0,
          "y":0
+        },
+        {
+         "draworder":"topdown",
+         "height":50,
+         "name":"bossSpawn",
+         "objects":[
+                {
+                 "gid":48,
+                 "height":0,
+                 "name":"",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":751,
+                 "y":536
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":50,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":

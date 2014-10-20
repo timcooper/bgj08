@@ -35,6 +35,7 @@ GameCtrl.Preloader.prototype = {
     this.load.image('arrow', '../assets/images/arrow.png');
 		this.load.image('seer', '../assets/images/seer.png');
     this.load.image('berserker', '../assets/images/berserker.png');
+		this.load.image('boss', '../assets/images/boss.png');
 		this.load.spritesheet('skullnest1', '../assets/images/skullnest1.png', 32, 16);
 		this.load.spritesheet('pickups', '../assets/images/pickups.png', 16, 16);
     this.load.tilemap('level1Map', '../assets/hel.json', null, Phaser.Tilemap.TILED_JSON);

@@ -345,9 +345,8 @@ GameCtrl.Player.prototype = {
       this.sprite.torso.tint = 0xff0000;
       this.sprite.arm.tint = 0xff0000;
     }else{
-
-      this.sprite.torso.tint = 0xff0000;
-      this.sprite.arm.tint = 0xff0000;
+      this.currentHealth = 0;
+      this.sprite.kill();
 
       var spr_bg = this.game.add.graphics(0, 0);
 
@@ -358,7 +357,7 @@ GameCtrl.Player.prototype = {
       spr_bg.endFill();
 
       var s = this.game.add.tween(spr_bg)
-      s.to({ alpha: 1 }, 500, null)
+      s.to({ alpha: 1 }, 2000, null)
       s.onComplete.add(function() {
         this.game.state.start('Title');
       }, this)
